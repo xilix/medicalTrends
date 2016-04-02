@@ -1,0 +1,9 @@
+{
+  "name": "diseaseTrends",
+  "version": "0.0.0",
+  "dependencies": {
+    "d3": "^3.5.16"
+  },
+  "devDependencies": {
+  }
+}
