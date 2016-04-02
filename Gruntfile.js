@@ -11,6 +11,19 @@ module.exports = function (grunt) {
   grunt.initConfig({
     // Metadata.
     pkg: grunt.file.readJSON('package.json'),
+    karma: {
+      options: {
+        configFile: 'karma.conf.js'
+      },
+      continous: {
+        autoWatch: true,
+        singleRun: false
+      },
+      unit: {
+        autoWatch: false,
+        singleRun: true
+      }
+    },
     jscs: {
       src: 'app/scripts/**/*.js',
       options: {
@@ -19,7 +32,7 @@ module.exports = function (grunt) {
         verbose: true,
         fix: false
       }
-    }
+    },
     connect: {
       server: {
         options: {
@@ -47,5 +60,6 @@ module.exports = function (grunt) {
 
   grunt.loadNpmTasks('grunt-wiredep');
   // Default task.
-  grunt.registerTask('default', ['connect', 'wiredep', 'watch']);
+  grunt.registerTask('test', ['jscs', 'karma:continous']);
+  grunt.registerTask('default', ['jscs', 'karma:unit', 'connect', 'wiredep', 'watch']);
 };
