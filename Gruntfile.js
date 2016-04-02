@@ -11,7 +11,15 @@ module.exports = function (grunt) {
   grunt.initConfig({
     // Metadata.
     pkg: grunt.file.readJSON('package.json'),
-
+    jscs: {
+      src: 'app/scripts/**/*.js',
+      options: {
+        config: ".jscsrc",
+        esnext: false,
+        verbose: true,
+        fix: false
+      }
+    }
     connect: {
       server: {
         options: {
