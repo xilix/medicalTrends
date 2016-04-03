@@ -7,7 +7,7 @@ describe('Main', function () {
         expect(State.filter !== undefined).toBe(true);
       });
       it('textSearch filter should be empty at the beginning', function () {
-        expect(State.filter.textSearch).toBe('');
+        expect(State.filter.term).toBe('');
       });
       it('begin and end should be the time bounds', function () {
         expect(State.filter.begin <= State.filter.end).toBe(true);
@@ -25,43 +25,6 @@ describe('Main', function () {
       it('should have empty items at the beginning', function () {
         expect(State.trends.length).toBe(0);
       });
-    });
-  });
-  describe('Resource', function () {
-    describe('queryBuilder', function () {
-      var queryBuilder;
-      beforeEach(function () {
-        queryBuilder = Resource.queryBuilder({
-          db: 'http://aaa',
-          search: 'http://bbb'
-        });
-      });
-      it('generate a query to lis db in NBCI', function () {
-        expect(queryBuilder.getDbQuery()).toBe('http://aaa');
-      })
-      it('generate a query to search UID in NBCI', function () {
-        expect(
-          queryBuilder.getSearchQuery({
-            term: 'ccc',
-            begin: 2015,
-            end: 2016
-          })
-        ).toEqual('http://bbb?db=pubmed&term=ccc&mindate=2015/01/01&maxdate=2016/12/31&retmode=json');
-        expect(
-          queryBuilder.getSearchQuery({
-            term: 'ccc',
-            end: 2016
-          })
-        ).toEqual('http://bbb?db=pubmed&term=ccc&maxdate=2016/12/31&retmode=json');
-        expect(
-          queryBuilder.getSearchQuery({
-            term: 'cc cc',
-            end: 2016
-          })
-        ).toEqual('http://bbb?db=pubmed&term=cc+cc&maxdate=2016/12/31&retmode=json');
-
-
-      })
     });
   });
 });

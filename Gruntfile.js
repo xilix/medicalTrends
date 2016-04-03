@@ -60,6 +60,6 @@ module.exports = function (grunt) {
 
   grunt.loadNpmTasks('grunt-wiredep');
   // Default task.
-  grunt.registerTask('test', ['jscs', 'karma:unit']);
+  grunt.registerTask('test', ['jscs', 'karma:continous']);
   grunt.registerTask('default', ['jscs', 'karma:unit', 'connect', 'wiredep', 'watch']);
 };
