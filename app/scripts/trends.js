@@ -1,8 +1,10 @@
 var Trends = (function () {
   return {
+    onTrendDestroy: function () {},
     destroyTrend: function (trend) {
       State.trends[trend] = undefined;
       delete State.trends[trend];
+      Trends.onTrendDestroy();
     },
     meldWithTrends: function (trend, data) {
       var trendDates;

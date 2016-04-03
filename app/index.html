@@ -12,30 +12,35 @@
     <script src="scripts/chart.js"></script>
     <script src="scripts/debounce.js"></script>
     <script src="scripts/trends.js"></script>
+    <script src="scripts/correlationChart.js"></script>
 </head>
 <body>
     <section class="trendsFilter"> 
-      <header>
-        <span>
-          <input type="search" id="trend" name="trend" placeholder="Search trends ..." />
-        </span>
-      </header>
       <section>
-        <div id="chart" class="chart"></div>
-      </section>
-      <footer> 
-        <div class="begin date">
-          <input class="move-date previous" type="button" value="<" name="previousBegin" id="previousBegin" />
-          <input type="number" id="begin" name="begin" value="2016" disabled />
-          <input class="move-date next" type="button" value=">" name="nextBegin" id="nextBegin" />
-        </div>
+        <header>
+          <span>
+            <input type="search" id="trend" name="trend" placeholder="Search trends ..." />
+          </span>
+        </header>
+        <section>
+          <div id="chart" class="chart"></div>
+        </section>
+        <footer> 
+          <div class="begin date">
+            <input class="move-date previous" type="button" value="<" name="previousBegin" id="previousBegin" />
+            <input type="number" id="begin" name="begin" value="2016" disabled />
+            <input class="move-date next" type="button" value=">" name="nextBegin" id="nextBegin" />
+          </div>
 
-        <div class="end date">
-          <input class="move-date previous" type="button" value="<" name="previousEnd" id="previousEnd" />
-          <input id="end" name="end" value="2016" type="number" disabled />
-          <input class="move-date next" type="button" value=">" name="nextEnd" id="nextEnd" />
-        </div>
-      </footer>
+          <div class="end date">
+            <input class="move-date previous" type="button" value="<" name="previousEnd" id="previousEnd" />
+            <input id="end" name="end" value="2016" type="number" disabled />
+            <input class="move-date next" type="button" value=">" name="nextEnd" id="nextEnd" />
+          </div>
+        </footer>
+      </section>
+      <section id="trendsCorrelation">
+      </section>
     </section>
     <section class="trendsList" id="trendsList">
     </section>
@@ -43,6 +48,8 @@
       var chartHandler = Chart()
       .setBarWidth(100)
       .addChartInto('chart');
+      var corrChartHandler = CorrelationChart()
+      .addChartInto('trendsCorrelation');
 
       function changeFilter() {
         var term = State.filter.term;
@@ -53,6 +60,12 @@
             Trends.meldWithTrends(term , data);
             Trends.writeTrendListInElement('trendsList');
             chartHandler.loading(false).update(data);
+            if (Object.keys(State.trends).length) {
+              corrChartHandler.update(
+                data,
+                State.trends    
+              ); 
+            }
           }
         );
       }
@@ -65,6 +78,10 @@
           window.previousEnd.disabled = false;
         }
       }
+
+      Trends.onTrendDestroy = function () {
+        corrChartHandler.clear(); 
+      };
 
       window.trend.value = State.filter.term;
       window.begin.value = State.filter.begin;
