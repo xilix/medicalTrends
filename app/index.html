@@ -53,46 +53,53 @@
         );
       }
 
-      var debouncerText = Debounce(changeFilter);
-      var debouncerButton = Debounce(changeFilter, 300);
-
       window.trend.value = State.filter.term;
       window.begin.value = State.filter.begin;
       window.end.value = State.filter.end;
 
       d3.select('#trend').on("keydown", function() {
-        State.filter.term = window.trend.value;
-        debouncerText();
+        Debounce(function () {
+          State.filter.term = window.trend.value;
+          changeFilter();
+        })();
       });
 
       d3.select(window.previousBegin).on("click", function() {
-        var value = +window.begin.value - 1;
-        window.begin.value = value;
-        State.filter.begin = value;
-        debouncerButton();
-      });
-      d3.select(window.nextBegin).on("click", function() {
-        var value = +window.begin.value + 1;
-        if (value <= +window.end.value) {
+        Debounce(function () {
+          var value = +window.begin.value - 1;
           window.begin.value = value;
           State.filter.begin = value;
-          debouncerButton();
-        }
+          changeFilter();
+        })();
+      });
+      d3.select(window.nextBegin).on("click", function() {
+        Debounce(function () {
+          var value = +window.begin.value + 1;
+          if (value <= +window.end.value) {
+            window.begin.value = value;
+            State.filter.begin = value;
+            changeFilter();
+          }
+        })();
       });
 
       d3.select(window.previousEnd).on("click", function() {
-        var value = +window.end.value - 1;
-        if (value >= +window.begin.value) {
-          window.end.value = value;
-          State.filter.end = value;
-          debouncerButton();
-        }
+        Debounce(function () {
+          var value = +window.end.value - 1;
+          if (value >= +window.begin.value) {
+            window.end.value = value;
+            State.filter.end = value;
+            changeFilter();
+          }
+        })();
       });
       d3.select(window.nextEnd).on("click", function() {
-        var value = +window.end.value + 1;
-        window.end.value = value;
-        State.filter.end = value;
-        debouncerButton();
+        Debounce(function () {
+          var value = +window.end.value + 1;
+          window.end.value = value;
+          State.filter.end = value;
+          changeFilter();
+        })();
       });
 
     </script>

@@ -43,11 +43,19 @@
 
 .bar {
   fill: steelblue;
-  fill-opacity: .9;
+  fill-opacity: .95;
 }
 
 .x.axis path {
   display: none;
+}
+
+.tick line {
+  stroke: grey;
+}
+
+.tick text {
+  fill: grey;
 }
 
 input[type=search] {

@@ -1,6 +1,15 @@
 var Chart = (function () {
   'use strict';
 
+  d3.selection.prototype.moveToBack = function () {
+    return this.each(function () {
+      var firstChild = this.parentNode.firstChild;
+      if (firstChild) {
+        this.parentNode.insertBefore(this, firstChild);
+      }   
+    }); 
+  }; 
+
   return function () {
     var ChartHandler = {
       setBarWidth: function (barWidth) {
@@ -71,6 +80,9 @@ var Chart = (function () {
             return ChartHandler.height - ChartHandler.y(d.count);
           });
 
+        ChartHandler.svg.selectAll('.x.axis').moveToBack();
+        ChartHandler.svg.selectAll('.y.axis').moveToBack();
+
         return ChartHandler;
       },
       loading: function (loading) {
@@ -113,7 +125,7 @@ var Chart = (function () {
 
         ChartHandler.yAxis = d3.svg.axis()
         .scale(ChartHandler.y)
-        .tickFormat(d3.format('e'))
+        .tickFormat(d3.format('d'))
         .orient('left')
         .tickSize(-ChartHandler.width);
 
