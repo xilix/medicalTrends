@@ -1,5 +1,28 @@
-section, header, footer {
+.trendsFilter {
+  width: 80%;
+  float: left;
+  clear: none;
+  box-sizing: border-box;
+}
+
+.trendsFilter section, header, footer {
+  display: block;
   width: 100%;
+}
+
+.trendsFilter header {
+  text-align: center;
+  height: 60px;
+}
+.trendsFilter section {
+  height: 400px;
+}
+
+.trendsList {
+  width: 20%;
+  float: left;
+  clear: none;
+  box-sizing: border-box;
 }
 
 .chart {
@@ -27,3 +50,36 @@ section, header, footer {
   display: none;
 }
 
+input[type=search] {
+  width: 300px;
+  height: 50px;
+  background: #6b808b;
+  border: none;
+  font-size: 10pt;
+  color: #fff;
+  dispay: inline-block;
+  padding-left: 15px;
+  -webkit-border-radius: 15px;
+  -moz-border-radius: 15px;
+  border-radius: 15px;
+}
+
+.begin.date {
+  text-align: left;
+  padding: 5px;
+  float: left;
+  clear: none;
+  width: 50%;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.end.date {
+  text-align: right;
+  padding: 5px;
+  float: right;
+  clear: none;
+  width: 50%;
+  overflow: hidden;
+  box-sizing: border-box;
+}

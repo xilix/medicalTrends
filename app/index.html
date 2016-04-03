@@ -13,22 +13,31 @@
     <script src="scripts/debounce.js"></script>
 </head>
 <body>
-    <header>
-      Trends: <input id="trend" name="trend" /><br />
-      <input type="button" value="<<" name="previousBegin" id="previousBegin" />
-      <input type="number" id="begin" name="begin" value="2016" disabled />
-      <input type="button" value=">>" name="previousBegin" id="nextBegin" />
-      - 
-      <input type="button" value="<<" name="previousEnd" id="previousEnd" />
-      <input id="end" name="end" value="2016" type="number" disabled />
-      <input type="button" value=">>" name="nextEnd" id="nextEnd" />
-    </header>
-    <section>
-      <div id="chart" class="chart">
-      </div>
+    <section class="trendsFilter"> 
+      <header>
+        <span>
+          <input type="search" id="trend" name="trend" placeholder="Search trends ..." />
+        </span>
+      </header>
+      <section>
+        <div id="chart" class="chart"></div>
+      </section>
+      <footer> 
+        <div class="begin date">
+          <input type="button" value="<" name="previousBegin" id="previousBegin" />
+          <input type="number" id="begin" name="begin" value="2016" disabled />
+          <input type="button" value=">" name="previousBegin" id="nextBegin" />
+        </div>
+
+        <div class="end date">
+          <input type="button" value="<" name="previousEnd" id="previousEnd" />
+          <input id="end" name="end" value="2016" type="number" disabled />
+          <input type="button" value=">" name="nextEnd" id="nextEnd" />
+        </div>
+      </footer>
     </section>
-    <footer> 
-    </footer>
+    <section class="trendsList">
+    </section>
     <script language="JavaScript">
       var chartHandler = Chart()
       .setBarWidth(100)
