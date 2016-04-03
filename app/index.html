@@ -11,6 +11,7 @@
     <script src="scripts/resource.js"></script>
     <script src="scripts/chart.js"></script>
     <script src="scripts/debounce.js"></script>
+    <script src="scripts/trends.js"></script>
 </head>
 <body>
     <section class="trendsFilter"> 
@@ -36,7 +37,7 @@
         </div>
       </footer>
     </section>
-    <section class="trendsList">
+    <section class="trendsList" id="trendsList">
     </section>
     <script language="JavaScript">
       var chartHandler = Chart()
@@ -44,26 +45,17 @@
       .addChartInto('chart');
 
       function changeFilter() {
+        var term = State.filter.term;
         chartHandler.loading(true);
         Resource.getTrends(
           State.filter,
           function (data) {
+            Trends.meldWithTrends(term , data);
+            Trends.writeTrendListInElement('trendsList');
             chartHandler.loading(false).update(data);
           }
         );
       }
-
-      window.trend.value = State.filter.term;
-      window.begin.value = State.filter.begin;
-      window.end.value = State.filter.end;
-
-      d3.select('#trend').on("keydown", function() {
-        Debounce(function () {
-          State.filter.term = window.trend.value;
-          changeFilter();
-        })();
-      });
-
       function checkAndDisableDateButtons() {
         if (State.filter.begin === State.filter.end) {
           window.nextBegin.disabled = true;
@@ -73,53 +65,68 @@
           window.previousEnd.disabled = false;
         }
       }
-      checkAndDisableDateButtons();
 
+      window.trend.value = State.filter.term;
+      window.begin.value = State.filter.begin;
+      window.end.value = State.filter.end;
+      checkAndDisableDateButtons();
       changeFilter();
 
+      var trendDebouncer = Debounce(function () {
+        State.filter.term = window.trend.value;
+        changeFilter();
+      }, 1000);
+      d3.select('#trend').on("keydown", function() {
+        trendDebouncer();
+      });
+
+      var previousBeginDebouncer = Debounce(function () {
+        var value = +window.begin.value - 1;
+        window.begin.value = value;
+        State.filter.begin = value;
+        changeFilter();
+        checkAndDisableDateButtons();
+      }, 500);
       d3.select(window.previousBegin).on("click", function() {
-        Debounce(function () {
-          var value = +window.begin.value - 1;
+        previousBeginDebouncer();
+        checkAndDisableDateButtons();
+      });
+      var nextBeginDebouncer = Debounce(function () {
+        var value = +window.begin.value + 1;
+        if (value <= +window.end.value) {
           window.begin.value = value;
           State.filter.begin = value;
           changeFilter();
           checkAndDisableDateButtons();
-        }, 200)();
-        checkAndDisableDateButtons();
-      });
+        }
+      }, 500);
       d3.select(window.nextBegin).on("click", function() {
-        Debounce(function () {
-          var value = +window.begin.value + 1;
-          if (value <= +window.end.value) {
-            window.begin.value = value;
-            State.filter.begin = value;
-            changeFilter();
-            checkAndDisableDateButtons();
-          }
-        }, 200)();
+        nextBeginDebouncer();
         checkAndDisableDateButtons();
       });
 
-      d3.select(window.previousEnd).on("click", function() {
-        Debounce(function () {
-          var value = +window.end.value - 1;
-          if (value >= +window.begin.value) {
-            window.end.value = value;
-            State.filter.end = value;
-            changeFilter();
-            checkAndDisableDateButtons();
-          }
-        }, 200)();
-        checkAndDisableDateButtons();
-      });
-      d3.select(window.nextEnd).on("click", function() {
-        Debounce(function () {
-          var value = +window.end.value + 1;
+      var previousEndDebouncer = Debounce(function () {
+        var value = +window.end.value - 1;
+        if (value >= +window.begin.value) {
           window.end.value = value;
           State.filter.end = value;
           changeFilter();
           checkAndDisableDateButtons();
-        }, 200)();
+        }
+      }, 500);
+      d3.select(window.previousEnd).on("click", function() {
+        previousEndDebouncer();
+        checkAndDisableDateButtons();
+      });
+      var nextEndDebouncer = Debounce(function () {
+        var value = +window.end.value + 1;
+        window.end.value = value;
+        State.filter.end = value;
+        changeFilter();
+        checkAndDisableDateButtons();
+      }, 500);
+      d3.select(window.nextEnd).on("click", function() {
+        nextEndDebouncer();
         checkAndDisableDateButtons();
       });
 
