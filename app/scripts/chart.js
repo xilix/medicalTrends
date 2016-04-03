@@ -74,9 +74,9 @@ var Chart = (function () {
         return ChartHandler;
       },
       loading: function (loading) {
-        ChartHandler.isLoading = true;
+        ChartHandler.isLoading = loading;
         if (loading) {
-          ChartHandler.svg.select('g.paths').append('text')
+          ChartHandler.svg.append('text')
           .attr('class', 'loading')
           .attr('x', Math.round(ChartHandler.width / 2))
           .attr('y', Math.round(ChartHandler.height / 2))
