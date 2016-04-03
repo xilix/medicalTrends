@@ -14,10 +14,78 @@
 </head>
 <body>
     <header>
-      Content
+      Trends: <input id="trend" name="trend" /><br />
+      <input type="button" value="<<" name="previousBegin" id="previousBegin" />
+      <input type="number" id="begin" name="begin" value="2016" disabled />
+      <input type="button" value=">>" name="previousBegin" id="nextBegin" />
+      - 
+      <input type="button" value="<<" name="previousEnd" id="previousEnd" />
+      <input id="end" name="end" value="2016" type="number" disabled />
+      <input type="button" value=">>" name="nextEnd" id="nextEnd" />
     </header>
-    <footer>
-        
+    <section>
+      <div id="chart" class="chart">
+      </div>
+    </section>
+    <footer> 
     </footer>
+    <script language="JavaScript">
+      var chartHandler = Chart()
+      .setBarWidth(100)
+      .addChartInto('chart');
+
+      function changeFilter() {
+        chartHandler.loading(true);
+        Resource.getTrends(
+          State.filter,
+          function (data) {
+            chartHandler.loading(false).update(data);
+          }
+        );
+      }
+
+      var debouncerText = Debounce(changeFilter);
+      var debouncerButton = Debounce(changeFilter, 300);
+
+      window.trend.value = State.filter.term;
+      window.begin.value = State.filter.begin;
+      window.end.value = State.filter.end;
+
+      d3.select('#trend').on("keydown", function() {
+        State.filter.term = window.trend.value;
+        debouncerText();
+      });
+
+      d3.select(window.previousBegin).on("click", function() {
+        var value = +window.begin.value - 1;
+        window.begin.value = value;
+        State.filter.begin = value;
+        debouncerButton();
+      });
+      d3.select(window.nextBegin).on("click", function() {
+        var value = +window.begin.value + 1;
+        if (value <= +window.end.value) {
+          window.begin.value = value;
+          State.filter.begin = value;
+          debouncerButton();
+        }
+      });
+
+      d3.select(window.previousEnd).on("click", function() {
+        var value = +window.end.value - 1;
+        if (value >= +window.begin.value) {
+          window.end.value = value;
+          State.filter.end = value;
+          debouncerButton();
+        }
+      });
+      d3.select(window.nextEnd).on("click", function() {
+        var value = +window.end.value + 1;
+        window.end.value = value;
+        State.filter.end = value;
+        debouncerButton();
+      });
+
+    </script>
 </body>
 </html>
