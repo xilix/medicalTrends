@@ -6,9 +6,9 @@ var Chart = (function () {
       var firstChild = this.parentNode.firstChild;
       if (firstChild) {
         this.parentNode.insertBefore(this, firstChild);
-      }   
-    }); 
-  }; 
+      }
+    });
+  };
 
   return function () {
     var ChartHandler = {
