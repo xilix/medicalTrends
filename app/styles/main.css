@@ -91,3 +91,34 @@ input[type=search] {
   overflow: hidden;
   box-sizing: border-box;
 }
+
+.move-date {
+  border: none;
+  background: steelblue;
+  font-size: 10pt;
+  color: #fff;
+  cursor: pointer;
+}
+
+.move-date:disabled {
+  background: #6b808b;
+  cursor: not-allowed;
+}
+
+.move-date.previous {
+  -webkit-border-top-left-radius: 15px;
+  -webkit-border-bottom-left-radius: 15px;
+  -moz-border-top-left-radius: 15px;
+  -moz-border-bottom-left-radius: 15px;
+  border-top-left-radius: 15px;
+  border-bottom-left-radius: 15px;
+}
+
+.move-date.next {
+  -webkit-border-top-right-radius: 15px;
+  -webkit-border-bottom-right-radius: 15px;
+  -moz-border-top-right-radius: 15px;
+  -moz-border-bottom-right-radius: 15px;
+  border-top-right-radius: 15px;
+  border-bottom-right-radius: 15px;
+}

@@ -12,18 +12,13 @@ describe('Main', function () {
       it('begin and end should be the time bounds', function () {
         expect(State.filter.begin <= State.filter.end).toBe(true);
       });
-      it('time stamp should be a time unit', function () {
-        expect(
-          ['y', 'm', 'd'].indexOf(State.filter.timeSpan) !== -1
-        ).toBe(true);
-      });
     });
     describe('Trends contains the output trends data', function () {
       it('should be defined at the beginning', function () {
         expect(State.trends !== undefined).toBe(true);
       });
       it('should have empty items at the beginning', function () {
-        expect(State.trends.length).toBe(0);
+        expect(Object.keys(State.trends).length).toBe(0);
       });
     });
   });

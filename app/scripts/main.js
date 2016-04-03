@@ -4,9 +4,8 @@ var State = {
   filter: {
     term: '',
     begin: new Date().getFullYear(),
-    end: new Date().getFullYear(),
-    timeSpan: 'm'
+    end: new Date().getFullYear()
   },
-  trends: []
+  trends: {}
 };
 
